@@ -1,0 +1,18 @@
+# DogTI reference files (keep locally, don't publish)
+dogti-*.html
+dogti-*.md
+
+# Claude Code local files
+.claude/
+memory/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+*.log

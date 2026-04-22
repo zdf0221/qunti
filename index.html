@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>QunTI · 群友人格测试</title>
+<meta name="description" content="12 题群友 MBTI 测试。测一下你是群聊里的哪种原型——指点江山的群主、凌晨两点发哲学长文的深夜玩家、还是只发表情包的静默艺术家？">
+<meta property="og:title" content="QunTI · 群友人格测试">
+<meta property="og:description" content="你是群里的哪一种原型？来测一下。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --black: #111111;
+    --gray-1: #f5f5f5;
+    --gray-2: #e8e8e8;
+    --gray-3: #aaaaaa;
+    --white: #ffffff;
+    --font: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+    --pixel: 'Press Start 2P', monospace;
+  }
+
+  body {
+    background: var(--white);
+    color: var(--black);
+    font-family: var(--font);
+    min-height: 100vh;
+    max-width: 390px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+
+  /* ─── 页面切换 ─── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ─── 封面页 ─── */
+  #page-home {
+    padding: 48px 0 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-pixel-title {
+    font-family: var(--pixel);
+    font-size: 34px;
+    letter-spacing: 2px;
+    text-align: center;
+    color: var(--black);
+    line-height: 1.2;
+    padding: 0 20px;
+    margin-bottom: 10px;
+  }
+
+  .home-subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: var(--gray-3);
+    letter-spacing: 0.5px;
+    margin-bottom: 36px;
+  }
+
+  .animals-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    overflow: hidden;
+    margin-bottom: 30px;
+  }
+
+  .animals-row {
+    display: flex;
+    gap: 10px;
+    white-space: nowrap;
+    width: max-content;
+  }
+
+  .row-1 { animation: scrollLeft 40s linear infinite; }
+  .row-2 { animation: scrollRight 44s linear infinite; }
+  .row-3 { animation: scrollLeft 48s linear infinite; }
+
+  @keyframes scrollLeft {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes scrollRight {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+
+  .animal-cell {
+    width: 84px;
+    height: 84px;
+    background: var(--gray-1);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .home-bottom {
+    padding: 0 24px;
+  }
+
+  .home-copy {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--black);
+    text-align: center;
+    margin-bottom: 22px;
+    font-weight: 500;
+  }
+
+  .home-copy .dim { color: var(--gray-3); font-size: 13px; display: block; margin-top: 6px; }
+
+  .btn-start {
+    width: 100%;
+    height: 52px;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    border-radius: 100px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: var(--font);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .btn-start:active { opacity: 0.85; }
+
+  .btn-start-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .btn-start-icon::after {
+    content: '';
+    border-left: 9px solid #fff;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    margin-left: 2px;
+  }
+
+  .home-footer {
+    font-size: 12px;
+    color: var(--gray-3);
+    text-align: center;
+    padding: 18px 20px 0;
+    margin: 0;
+  }
+  .home-footer a { color: #4a90d9; text-decoration: none; }
+
+  /* ─── 题目页 ─── */
+  #page-quiz {
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  .quiz-header {
+    padding: 14px 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .btn-back {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--gray-1);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--black);
+  }
+
+  .quiz-counter {
+    font-size: 13px;
+    color: var(--gray-3);
+    font-weight: 500;
+  }
+
+  .progress-wrap { padding: 16px 20px 0; }
+  .progress-track {
+    height: 3px;
+    background: var(--gray-2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--black);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .quiz-body { padding: 32px 24px 0; }
+
+  .quiz-role-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .quiz-role-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--gray-1);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .quiz-role-bubble {
+    background: var(--gray-1);
+    border-radius: 12px 12px 12px 4px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--gray-3);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .question-text {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: -0.3px;
+    margin-bottom: 28px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .opt {
+    padding: 16px 18px;
+    border: 1.5px solid var(--gray-2);
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--black);
+    background: var(--white);
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: all 0.15s;
+    -webkit-appearance: none;
+  }
+  .opt-key {
+    font-size: 11px;
+    color: var(--gray-3);
+    font-weight: 600;
+    min-width: 14px;
+    margin-top: 1px;
+  }
+  .opt:active, .opt.selected {
+    background: var(--black);
+    border-color: var(--black);
+    color: var(--white);
+  }
+  .opt.selected .opt-key { color: rgba(255,255,255,0.5); }
+
+  .btn-next {
+    margin: 28px 24px 0;
+    width: calc(100% - 48px);
+    height: 52px;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: opacity 0.15s;
+    opacity: 0.25;
+    pointer-events: none;
+  }
+  .btn-next.enabled { opacity: 1; pointer-events: all; }
+  .btn-next.enabled:active { opacity: 0.75; }
+
+  /* ─── 结果页 ─── */
+  #page-result {
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  .result-header {
+    padding: 14px 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--gray-3);
+  }
+
+  .result-hero {
+    padding: 40px 28px 34px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .result-role-frame {
+    width: 144px;
+    height: 144px;
+    background: var(--gray-1);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .result-label {
+    font-size: 12px;
+    color: var(--gray-3);
+    font-weight: 500;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .result-type {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    margin-bottom: 6px;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .result-subname {
+    font-size: 14px;
+    color: var(--gray-3);
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .result-quote {
+    background: var(--gray-1);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin: 0 24px 20px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--black);
+    position: relative;
+  }
+  .result-quote::before {
+    content: '"';
+    font-size: 36px;
+    color: var(--gray-2);
+    position: absolute;
+    top: 8px;
+    left: 14px;
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .result-quote p { padding-left: 6px; }
+
+  .traits { padding: 0 24px 20px; }
+  .traits-title {
+    font-size: 12px;
+    color: var(--gray-3);
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+  .trait-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .trait {
+    background: var(--gray-1);
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--black);
+    font-weight: 500;
+  }
+
+  .result-desc {
+    padding: 0 24px 24px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #444;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--gray-2);
+    margin: 4px 24px 20px;
+  }
+
+  .result-actions {
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-share {
+    width: 100%;
+    height: 52px;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: var(--font);
+    cursor: pointer;
+  }
+  .btn-retry {
+    width: 100%;
+    height: 52px;
+    background: var(--white);
+    color: var(--black);
+    border: 1.5px solid var(--gray-2);
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: var(--font);
+    cursor: pointer;
+  }
+  .btn-share:active, .btn-retry:active { opacity: 0.7; }
+
+  svg { image-rendering: pixelated; display: block; }
+</style>
+</head>
+<body>
+
+<!-- ═══ 封面页 ═══ -->
+<div class="page active" id="page-home">
+
+  <div class="home-pixel-title">QUNTI</div>
+  <div class="home-subtitle">群友人格测试 · 12 题</div>
+
+  <div class="animals-stage">
+    <div class="animals-row row-1" id="home-row-1"></div>
+    <div class="animals-row row-2" id="home-row-2"></div>
+    <div class="animals-row row-3" id="home-row-3"></div>
+  </div>
+
+  <div class="home-bottom">
+    <div class="home-copy">
+      每个群里都有这 16 种人。<br>
+      测一下，你是哪一种。
+      <span class="dim">12 道题，一分钟，离谱但说中了</span>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">
+      <span class="btn-start-icon"></span>
+      开始测试
+    </button>
+  </div>
+
+  <p class="home-footer">灵感来自 <a href="https://dogti.pages.dev/" target="_blank">DogTI</a> · 玩法一致，换成群聊</p>
+
+</div>
+
+
+<!-- ═══ 题目页 ═══ -->
+<div class="page" id="page-quiz">
+  <div class="quiz-header">
+    <button class="btn-back" onclick="goBack()">←</button>
+    <span class="quiz-counter" id="quiz-counter">1 / 12</span>
+    <div style="width:36px"></div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="quiz-body">
+    <div class="quiz-role-wrap">
+      <div class="quiz-role-icon" id="quiz-role-icon"></div>
+      <div class="quiz-role-bubble" id="quiz-role-bubble">认真想想，别骗我</div>
+    </div>
+
+    <div class="question-text" id="question-text"></div>
+
+    <div class="options" id="options-wrap"></div>
+  </div>
+
+  <button class="btn-next" id="btn-next" onclick="nextQuestion()">
+    继续 →
+  </button>
+</div>
+
+
+<!-- ═══ 结果页 ═══ -->
+<div class="page" id="page-result">
+  <div class="result-header">
+    <span>QunTI 结果</span>
+    <span id="result-date"></span>
+  </div>
+
+  <div class="result-hero">
+    <div class="result-role-frame" id="result-role-frame"></div>
+    <div class="result-label">你的群友格是</div>
+    <div class="result-type" id="result-type">—</div>
+    <div class="result-subname" id="result-subname">—</div>
+  </div>
+
+  <div class="result-quote">
+    <p id="result-quote-text">—</p>
+  </div>
+
+  <div class="traits">
+    <div class="traits-title">性格标签</div>
+    <div class="trait-list" id="trait-list"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="result-desc" id="result-desc"></div>
+
+  <div class="result-actions">
+    <button class="btn-share" onclick="shareResult()">分享给朋友</button>
+    <button class="btn-retry" onclick="retryQuiz()">再测一次</button>
+  </div>
+</div>
+
+
+<script>
+// ──────────────────────────────────────────────
+// 题目数据（12题，覆盖 E/I、S/N、T/F、J/P 四维度）
+// ──────────────────────────────────────────────
+const questions = [
+  {
+    text: "群里新进来一个没见过的陌生人，你？",
+    hint: "社交还是不社交，这是个问题",
+    options: [
+      { key: "A", text: "立刻发个欢迎表情包，再补一句「来啦欢迎」", dim: "E" },
+      { key: "B", text: "先翻翻他的朋友圈 / 头像昵称，看懂再说话", dim: "I" },
+      { key: "C", text: "不吭声，潜一段时间再决定要不要搭话", dim: "I" }
+    ]
+  },
+  {
+    text: "群里冒出一个你完全没听过的话题",
+    hint: "要不要插一脚",
+    options: [
+      { key: "A", text: "立刻打开搜索，查完一定要发表意见", dim: "N" },
+      { key: "B", text: "标记一下，晚点正经研究完再回来聊", dim: "J" },
+      { key: "C", text: "算了，他们聊他们的，我聊我的", dim: "S" }
+    ]
+  },
+  {
+    text: "你的好群友被别人阴阳怪气了",
+    hint: "第一反应是什么",
+    options: [
+      { key: "A", text: "直接上，把阴阳的那位怼回去", dim: "T" },
+      { key: "B", text: "马上私聊朋友：「你还好吗？别理那种人」", dim: "F" },
+      { key: "C", text: "先看谁在理，事实站哪边我站哪边", dim: "S" }
+    ]
+  },
+  {
+    text: "你在摸鱼，脑子里飘过的画面是？",
+    hint: "你的大脑后台在播什么",
+    options: [
+      { key: "A", text: "下班去吃什么、周末去哪、要不要冲动消费", dim: "P" },
+      { key: "B", text: "最近一直想起的一个人，不知道他在干嘛", dim: "F" },
+      { key: "C", text: "一个很奇怪的问题：如果现在是梦怎么证明？", dim: "N" }
+    ]
+  },
+  {
+    text: "一个几乎不熟的人突然私聊你",
+    hint: "你的第一反应是",
+    options: [
+      { key: "A", text: "热情回复，聊就聊嘛，多认识一个人没坏处", dim: "E" },
+      { key: "B", text: "先看他说什么、有没有事，再决定怎么接", dim: "S" },
+      { key: "C", text: "不熟的私聊让我血压高，装没看见", dim: "I" }
+    ]
+  },
+  {
+    text: "你正在摸鱼，群里突然「@所有人」",
+    hint: "你的第一个动作",
+    options: [
+      { key: "A", text: "立刻点开看，生怕错过什么大事", dim: "P" },
+      { key: "B", text: "瞄一眼，没急事就放着等晚点再回", dim: "J" },
+      { key: "C", text: "开始脑补：是不是又有人要搞事情？", dim: "N" }
+    ]
+  },
+  {
+    text: "今天特别累，但群里一直「@你」让你发言",
+    hint: "你会怎么处理",
+    options: [
+      { key: "A", text: "再累也回一下，让人家空等我心里过意不去", dim: "F" },
+      { key: "B", text: "直接消息免打扰，今天就是想安静", dim: "I" },
+      { key: "C", text: "发一句「忙回头聊」就关了，意思到了", dim: "T" }
+    ]
+  },
+  {
+    text: "全群都在潜水时，你的状态是",
+    hint: "没人说话时你是什么样",
+    options: [
+      { key: "A", text: "我来救场！发点什么让大家聊起来", dim: "E" },
+      { key: "B", text: "正好，我也不想说话，静静挺好", dim: "I" },
+      { key: "C", text: "在脑子里重播上次谁说过的一句话", dim: "N" }
+    ]
+  },
+  {
+    text: "有人拉了个新群说「那边聊」",
+    hint: "跟还是不跟",
+    options: [
+      { key: "A", text: "好啊好啊！新群新气象，先进去看看", dim: "P" },
+      { key: "B", text: "先问问谁会去、聊什么主题，再决定进不进", dim: "J" },
+      { key: "C", text: "拉我就去，反正哪都是水群", dim: "S" }
+    ]
+  },
+  {
+    text: "你做成了一件自己觉得很牛的事",
+    hint: "你会发到群里吗",
+    options: [
+      { key: "A", text: "立刻发！还要@几个一定会夸我的人", dim: "E" },
+      { key: "B", text: "默默截个图自己存着，心里美一下", dim: "I" },
+      { key: "C", text: "已经在想下一件要做的事了，没空发", dim: "T" }
+    ]
+  },
+  {
+    text: "群里问「晚上吃啥」，你的反应",
+    hint: "这种时刻最能暴露你",
+    options: [
+      { key: "A", text: "随便！吃啥都行，别纠结赶紧定", dim: "P" },
+      { key: "B", text: "认真想了想，锁定最想吃的那一家发出来", dim: "J" },
+      { key: "C", text: "开始列优缺点对比，结果大家都已经点完了", dim: "N" }
+    ]
+  },
+  {
+    text: "最后一题：你最想在一个什么样的群里？",
+    hint: "认真想想，这是你真实的向往",
+    options: [
+      { key: "A", text: "热闹的群，每天都有人说话，信息量大", dim: "E" },
+      { key: "B", text: "安静的群，只有两三个懂我的人，够了", dim: "I" },
+      { key: "C", text: "什么群都行，自由进出，不用天天回", dim: "P" }
+    ]
+  }
+];
+
+// ──────────────────────────────────────────────
+// 16 种结果（ENTJ → ISFP 顺序，严格保持 DogTI 数据结构）
+// ──────────────────────────────────────────────
+const results = {
+  "在群里指点江山的群主": {
+    subname: "不用吵，听我安排",
+    quote: "这件事不需要投票，我已经决定了。",
+    traits: ["三句话定方向", "一眼看穿谁在水", "安排任务眼都不眨", "群里最被私聊的那位"],
+    desc: "群主型人格的存在感不靠说话多，靠说话准——一出手就是定音锤。你平时不说话大家就有点发慌，一开口大家就知道这件事要有个了断了。你不是爱管闲事，你是看到乱糟糟就忍不住。别人以为你很累，其实你乐在其中：只有你看得清全局，这件事才能真正推下去。",
+    role: "groupowner"
+  },
+  "把所有话题都带偏的杠精": {
+    subname: "我只是提出了一个可能性",
+    quote: "你说的有道理，但是我想从另外一个角度再聊一下。",
+    traits: ["逻辑漏洞扫描仪", "赢了辩论不知道赢了啥", "话题越聊越歪", "最怕的是无人可杠"],
+    desc: "你不是恶意杠精，你是脑子停不下来的那种——听到一个观点，脑内立刻弹出三个反例，不讲出来浑身难受。对你来说辩论是享受思考本身，不是要证明谁错了，可惜大家不一定这么理解。所以你经常聊着聊着就把气氛带冷，不是你说错了，是你把话题推到没人接得住的地方去了。",
+    role: "debater"
+  },
+  "比你还担心群氛围的和事佬": {
+    subname: "别吵了别吵了我请喝奶茶",
+    quote: "冷静一下，大家都没错，先别删群。",
+    traits: ["气氛不对第一个察觉", "同时私聊两方讲和", "掉眼泪前先问别人没事吧", "奶茶红包来回发"],
+    desc: "群里一旦气氛不对，你是第一个感觉到的——不是你多敏感，是你的雷达对情绪 24 小时开机。你总是第一时间跳出来打圆场，分别私聊两边，再请大家喝杯奶茶把事情抹过去。你帮了很多人，但很少有人想到问一句：你自己呢？你偶尔也希望有人先问问你。",
+    role: "peacemaker"
+  },
+  "一分钟换一个话题的水群机器": {
+    subname: "欸你们说这个好不好玩",
+    quote: "对了！刚想起来一件事跟这个完全没关系但是——",
+    traits: ["同时在推进五个新话题", "热情真实但保质期两天", "新朋友比记住名字多", "最怕冷场"],
+    desc: "你的群聊首页永远在亮，你的脑子永远在同时开四五个窗口。哪个话题你都能兴奋地接上，哪个兴趣过了两周就换下一个。你不是三分钟热度，你是一分钟热度但一天换 60 次。大家喜欢你来，因为气氛有救了；大家也怕你来，因为接你话得跟上你的速度。",
+    role: "topichopper"
+  },
+  "把群规背下来的管理员": {
+    subname: "请阅读置顶第 3 条",
+    quote: "本群禁止刷屏，已 T，请配合管理。",
+    traits: ["群规倒背如流", "违规消息 30 秒内处理", "说「可以」前先确认细节", "靠谱到让人发毛"],
+    desc: "管理员型的你不是喜欢管人，是见不得流程乱——规则定了就是定了，执行到底是一种朴素的满足感。你能在群膨胀到几百人的时候还把秩序稳住，别人只看到你踢人快，没看到你背后把置顶改了 17 版。你把「靠谱」当成最高荣誉，说「没问题」前一定先确认清楚。",
+    role: "admin"
+  },
+  "气氛一冷立刻开麦的整活担当": {
+    subname: "别慌，哥哥/姐姐下场了",
+    quote: "别冷场，我来一段，听好了。",
+    traits: ["冷场 3 秒自动接管", "身边永远有意外发生", "计划？不存在的", "但每次都挺好玩"],
+    desc: "你是群里永远在线的气氛担当——没人说话你开麦，有人吵架你讲段子，任何局都被你救过场。你不擅长长线规划，说好一起干的事下周可能就不记得了，但跟你在一起总会发生有意思的事。大家偶尔抱怨你不靠谱，但下次活动第一个想到的还是拉上你。",
+    role: "entertainer"
+  },
+  "谁发朋友圈都会去点赞的暖心派": {
+    subname: "看到了，马上处理",
+    quote: "看见了看见了，赞已点，评论也在路上。",
+    traits: ["朋友圈点赞不过夜", "记得每个人的近况", "帮完了才发现自己很累", "最难说出口「我不想」"],
+    desc: "你是群里永远在回应的人——谁发朋友圈你第一个赞，谁问题抛出来你第一个接，谁有难处你第一个伸手。你不是爱热闹，你是见不得人被忽视。你把别人的需求永远放在自己前面，说「好」总比说「不」容易，代价是有时候把自己说进去了。但你不后悔，因为看别人开心你是真的开心。",
+    role: "reactor"
+  },
+  "每句话都要配表情包的段子手": {
+    subname: "文字不够图来凑",
+    quote: "这个梗我必须发，不发手痒。",
+    traits: ["表情包收藏 2000+", "金句密度全群最高", "没人笑就发第二个", "群名片是梗图"],
+    desc: "你的聊天窗口是一个永不下档的脱口秀——每句话配一张图，每个梗接一个梗，群里哪里有笑声哪里就有你的 ID。你对「出场感」天生敏感，进群不是来聊事情的，是来表演的。大家偶尔嫌你闹，但只要你一天不发段子，群里就空得不像样。",
+    role: "memelord"
+  },
+  "发言不多但一针见血的技术大佬": {
+    subname: "这个方案有问题，第 3 点",
+    quote: "我看过了。不行，原因如下。",
+    traits: ["三天发一句但每句都对", "群里最让人信的那位", "宁可不说也不解释", "私信排队等回复"],
+    desc: "你在群里是出了名的「沉默但准」——一天不说话没事，一开口就是定稿。你不爱废话，也不爱解释自己，觉得理由在事实里摆着，看懂的人自然看懂。别人以为你高冷，其实你是懒得证明。你把精力留给真正值得思考的问题，留给那几个能接住你思路的人。",
+    role: "techguru"
+  },
+  "发了长文之后就消失的学术派": {
+    subname: "（点了一下上线 30 秒后不见了）",
+    quote: "我整理了一下思路，大家看看（附 PDF 一份）。",
+    traits: ["长文写得比工作还认真", "发完就下线", "被 at 三次才可能回", "思考时间 ≫ 社交时间"],
+    desc: "你一旦开始认真思考一个问题，外部世界就会被静音——你能对着屏幕坐三个小时写一篇精心组织的长文，发完就关掉消息提醒，下线。不是对群友不热情，是你的脑子一旦钻进去就出不来。你更享受思考的过程，而不是回应的热闹。那些被你回复的人知道：等你的回复是值得的。",
+    role: "theorist"
+  },
+  "凌晨两点发哲学长文的深夜玩家": {
+    subname: "你们醒着吗，我在想一件事",
+    quote: "其实我们追求的，可能从来都不是那个东西。",
+    traits: ["白天正常晚上深刻", "凌晨灵感爆棚", "说「没事」基本都有事", "共情雷达 24 小时开机"],
+    desc: "白天你和大家一起聊八卦点外卖，但一到凌晨你的频道就切换了——你开始思考人际关系、职业选择、和某段过去的自己和解。你打字很慢，每句都反复推敲，发出来的文字偶尔会让人沉默几秒。你温柔、深刻、会观察，但自己偶尔会在某个角落悄悄崩一下再自己修好。你治愈了很多人，但真正懂你的人，你还没遇到够多。",
+    role: "nightowl"
+  },
+  "只发歌词和截图的文艺青年": {
+    subname: "这段旋律让我哭了，你们不懂",
+    quote: "听，这里的转调，心就空了一下。",
+    traits: ["歌单藏着人生阶段", "一段话憋半小时", "对美有偏执的标准", "被真正理解那刻会全力爱你"],
+    desc: "你的群聊记录像一本私人日记——一段歌词、一张电影截图、一句突然的感慨。你不是不合群，你是有些东西文字说不清，宁可发一首歌让懂的人自己听出来。你的内心世界比现实大一百倍，别人看到你在发呆，其实你脑内已经写完了一部短片。被懂的那一刻，你会把全部都给出去。",
+    role: "poet"
+  },
+  "每天 8 点整打卡的自律标兵": {
+    subname: "Day 237，继续",
+    quote: "说好今年每天打卡的，凌晨两点也要发。",
+    traits: ["打卡记录从不断更", "迟发一天自己睡不着", "靠谱到让人有点压力", "「差不多」三个字是异类"],
+    desc: "你是群里的日历本——每天几点发什么大家门儿清，要是哪天你没打卡，大家反而会担心你是不是出事了。你不是表演自律，你是真的定了就要做到。你的待办清单从不过夜，迟交会让你睡不着觉。别人觉得你像个机器人，但机器人不会对每一个小坚持都发自内心地开心。",
+    role: "checkin"
+  },
+  "默默看戏关键时刻出手的扫地僧": {
+    subname: "我看看。（发了一个 log）",
+    quote: "没什么好说的，我已经处理好了。",
+    traits: ["不说话但什么都看到了", "动手能力强到诡异", "不解释但结果在那", "被需要但不爱被打扰"],
+    desc: "你是群里最神秘的那一位——平时完全看不到你，但每次出大事你都在第一线冷静处理。你不会说「我来帮你」，但出了事第一个甩出 log 或方案的就是你。你不喜欢站台，也不爱被夸，你享受的是「自己看着一件事被解决」这种朴素的满足感。你的存在本身就是群里的一种安全感。",
+    role: "observer"
+  },
+  "记得每个人生日的细心派": {
+    subname: "今天是 xx 的生日，大家祝一下",
+    quote: "你没说，但我记得你上次提过。",
+    traits: ["生日不会忘", "忌口比本人更清楚", "不邀功但默默都做了", "被忽视会难过但不说"],
+    desc: "你是群里的记忆管家——谁的生日、谁的忌口、谁最近在为什么烦，你都记得清清楚楚。你不是故意记的，是你把「记住别人」当成一种本能。你做的很多事大家没注意到：帮忙发起群祝福、偷偷备注对方近况、在有人难过时第一个发去私信。别人以为这些是巧合，其实都是你在悄悄安排。",
+    role: "caretaker"
+  },
+  "只发表情包不打字的静默艺术家": {
+    subname: "[微笑][OK][狗头保命]",
+    quote: "文字太累了，表情包能说明一切。",
+    traits: ["收藏夹 3000+ 张图", "三个月没在群里打过字", "关键表情准到离谱", "却没人说他没存在感"],
+    desc: "你不爱打字，但你比谁都在场——每一句需要回应的话你都到了，只不过是以一个精准表情包的形式。你的收藏夹是一部人类情绪全集，每一种微妙的场合你都能找到刚好对应的那张。别人聊天用字，你用图。你话少但不冷淡，你安静但在听。这是你与世界达成的温柔协议。",
+    role: "sticker"
+  }
+};
+
+// ──────────────────────────────────────────────
+// 16 个内联像素头像（16×16 bitmap，黑色像素绘制在透明/灰底上）
+// ──────────────────────────────────────────────
+const rolePixels = {
+  // ENTJ 群主 - 皇冠
+  groupowner: [
+    "                ",
+    "                ",
+    "                ",
+    "   #   #   #    ",
+    "   ##  #  ##    ",
+    "   ## ### ##    ",
+    "   ##########   ",
+    "   #        #   ",
+    "   #        #   ",
+    "   #  ####  #   ",
+    "   #        #   ",
+    "   #        #   ",
+    "   ##########   ",
+    "                ",
+    "                ",
+    "                "
+  ],
+  // ENTP 杠精 - 对话泡+问号
+  debater: [
+    "                ",
+    "   #########    ",
+    "  #         #   ",
+    "  #   ###   #   ",
+    "  #  #   #  #   ",
+    "  #      #  #   ",
+    "  #     #   #   ",
+    "  #    #    #   ",
+    "  #         #   ",
+    "  #    #    #   ",
+    "   #########    ",
+    "     ##         ",
+    "    ##          ",
+    "                ",
+    "                ",
+    "                "
+  ],
+  // ENFJ 和事佬 - 心
+  peacemaker: [
+    "                ",
+    "                ",
+    "                ",
+    "   ###    ###   ",
+    "  #####  #####  ",
+    "  ############  ",
+    "  ############  ",
+    "  ############  ",
+    "   ##########   ",
+    "    ########    ",
+    "     ######     ",
+    "      ####      ",
+    "       ##       ",
+    "                ",
+    "                ",
+    "                "
+  ],
+  // ENFP 水群机器 - 三点打字泡
+  topichopper: [
+    "                ",
+    "                ",
+    "    ########    ",
+    "   #        #   ",
+    "  #          #  ",
+    "  #          #  ",
+    "  # ## ## ## #  ",
+    "  # ## ## ## #  ",
+    "  #          #  ",
+    "   #        #   ",
+    "    #######     ",
+    "        ##      ",
+    "       ##       ",
+    "                ",
+    "                ",
+    "                "
+  ],
+  // ESTJ 管理员 - 盾+勾
+  admin: [
+    "                ",
+    "      ####      ",
+    "     ######     ",
+    "    ########    ",
+    "   ##########   ",
+    "   ##########   ",
+    "   ##      ##   ",
+    "   ##    ####   ",
+    "   ##   ####    ",
+    "   ##  ####     ",
+    "   ## #####     ",
+    "   ##   ####    ",
+    "    ########    ",
+    "     ######     ",
+    "      ####      ",
+    "       ##       "
+  ],
+  // ESTP 整活 - 麦克风
+  entertainer: [
+    "                ",
+    "                ",
+    "      ######    ",
+    "     #      #   ",
+    "     #      #   ",
+    "     #      #   ",
+    "     #      #   ",
+    "     ########   ",
+    "      ######    ",
+    "       ####     ",
+    "        ##      ",
+    "        ##      ",
+    "        ##      ",
+    "     ########   ",
+    "                ",
+    "                "
+  ],
+  // ESFJ 点赞 - +1 符号
+  reactor: [
+    "                ",
+    "                ",
+    "        ##      ",
+    "        ##      ",
+    "        ##      ",
+    "    ##########  ",
+    "    ##########  ",
+    "        ##      ",
+    "        ##      ",
+    "        ##      ",
+    "                ",
+    "                ",
+    "     ##   ####  ",
+    "    ###      #  ",
+    "     ##      #  ",
+    "     ##      #  "
+  ],
+  // ESFP 段子手 - 哭笑脸框
+  memelord: [
+    "                ",
+    "   ##########   ",
+    "  #          #  ",
+    "  #          #  ",
+    "  #  ##  ##  #  ",
+    "  #  ##  ##  #  ",
+    "  #          #  ",
+    "  #          #  ",
+    "  #  ######  #  ",
+    "  #  #    #  #  ",
+    "  #  ######  #  ",
+    "  #          #  ",
+    "   ##########   ",
+    "     ##         ",
+    "    ##          ",
+    "                "
+  ],
+  // INTJ 技术大佬 - 眼镜
+  techguru: [
+    "                ",
+    "                ",
+    "                ",
+    "                ",
+    "                ",
+    "  ####    ####  ",
+    " #    #  #    # ",
+    " #    ####    # ",
+    " #    ####    # ",
+    " #    #  #    # ",
+    "  ####    ####  ",
+    "                ",
+    "                ",
+    "                ",
+    "                ",
+    "                "
+  ],
+  // INTP 学术派 - 翻开的书
+  theorist: [
+    "                ",
+    "                ",
+    "     #     #    ",
+    "    ##     ##   ",
+    "   # #     # #  ",
+    "   # #     # #  ",
+    "   # #     # #  ",
+    "  ##############",
+    "  #    ###     #",
+    "  # #  ###  #  #",
+    "  # #  ###  #  #",
+    "  # #  ###  #  #",
+    "  ##############",
+    "                ",
+    "                ",
+    "                "
+  ],
+  // INFJ 深夜 - 月亮
+  nightowl: [
+    "                ",
+    "                ",
+    "        ####    ",
+    "      ##    #   ",
+    "     ##         ",
+    "    ##          ",
+    "    ##          ",
+    "   ##           ",
+    "   ##           ",
+    "    ##          ",
+    "    ##          ",
+    "     ##         ",
+    "      ##    #   ",
+    "        ####    ",
+    "                ",
+    "                "
+  ],
+  // INFP 文艺 - 音符
+  poet: [
+    "                ",
+    "                ",
+    "       ######   ",
+    "       ######   ",
+    "       #        ",
+    "       #        ",
+    "       #        ",
+    "       #        ",
+    "       #        ",
+    "       #        ",
+    "       #        ",
+    "    ####        ",
+    "   ######       ",
+    "   ######       ",
+    "    ####        ",
+    "                "
+  ],
+  // ISTJ 打卡 - 日历带勾
+  checkin: [
+    "                ",
+    "   ##      ##   ",
+    "   ##      ##   ",
+    "  ############  ",
+    "  ############  ",
+    "  #          #  ",
+    "  #        # #  ",
+    "  #       ## #  ",
+    "  #      ##  #  ",
+    "  # #   ##   #  ",
+    "  # ## ##    #  ",
+    "  #  ###     #  ",
+    "  #   #      #  ",
+    "  #          #  ",
+    "  ############  ",
+    "                "
+  ],
+  // ISTP 扫地僧 - 放大镜
+  observer: [
+    "                ",
+    "                ",
+    "     ######     ",
+    "    #      #    ",
+    "   #        #   ",
+    "   #  ####  #   ",
+    "   # ##  ## #   ",
+    "   # ##  ## #   ",
+    "   #  ####  #   ",
+    "   #        #   ",
+    "    #      ##   ",
+    "     ######  #  ",
+    "           ##   ",
+    "          ##    ",
+    "         ##     ",
+    "                "
+  ],
+  // ISFJ 细心 - 礼物盒
+  caretaker: [
+    "                ",
+    "     ##  ##     ",
+    "    #  ##  #    ",
+    "    #  ##  #    ",
+    "     ######     ",
+    "  ############  ",
+    "  ############  ",
+    "  #####  #####  ",
+    "  #    ##    #  ",
+    "  #    ##    #  ",
+    "  #    ##    #  ",
+    "  #    ##    #  ",
+    "  #    ##    #  ",
+    "  ############  ",
+    "                ",
+    "                "
+  ],
+  // ISFP 静默艺术 - 表情方块
+  sticker: [
+    "                ",
+    "   ##########   ",
+    "  #          #  ",
+    "  #          #  ",
+    "  #  ##  ##  #  ",
+    "  #  ##  ##  #  ",
+    "  #          #  ",
+    "  #          #  ",
+    "  #  #    #  #  ",
+    "  #  ######  #  ",
+    "  #          #  ",
+    "  #          #  ",
+    "   ##########   ",
+    "                ",
+    "                ",
+    "                "
+  ]
+};
+
+function pixelSVG(key, size) {
+  const grid = rolePixels[key];
+  if (!grid) return '';
+  let rects = '';
+  for (let y = 0; y < grid.length; y++) {
+    const row = grid[y];
+    for (let x = 0; x < row.length; x++) {
+      if (row[x] !== ' ') {
+        rects += `<rect x="${x}" y="${y}" width="1" height="1"/>`;
+      }
+    }
+  }
+  return `<svg viewBox="0 0 16 16" width="${size}" height="${size}" fill="#111" shape-rendering="crispEdges" style="image-rendering:pixelated">${rects}</svg>`;
+}
+
+const roleKeys = Object.keys(rolePixels);
+
+// ──────────────────────────────────────────────
+// 首页跑马灯渲染（三行）
+// ──────────────────────────────────────────────
+function renderHomeMarquee() {
+  const rows = [
+    ['groupowner','debater','peacemaker','topichopper','admin','entertainer','reactor','memelord'],
+    ['techguru','theorist','nightowl','poet','checkin','observer','caretaker','sticker'],
+    ['memelord','nightowl','groupowner','caretaker','reactor','theorist','sticker','entertainer']
+  ];
+  ['home-row-1','home-row-2','home-row-3'].forEach((id, i) => {
+    const row = rows[i];
+    const cells = [...row, ...row] // 复制一份，让循环无缝
+      .map(k => `<div class="animal-cell">${pixelSVG(k, 72)}</div>`)
+      .join('');
+    document.getElementById(id).innerHTML = cells;
+  });
+}
+
+// ──────────────────────────────────────────────
+// 状态与页面切换
+// ──────────────────────────────────────────────
+let currentQ = 0;
+let answers = [];
+let selectedOpt = null;
+let lastQuizRoleIdx = -1;
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function startQuiz() {
+  currentQ = 0;
+  answers = [];
+  renderQuestion();
+  showPage('page-quiz');
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  selectedOpt = null;
+
+  document.getElementById('quiz-counter').textContent = `${currentQ + 1} / ${questions.length}`;
+  document.getElementById('progress-fill').style.width = `${((currentQ) / questions.length) * 100}%`;
+  document.getElementById('question-text').textContent = q.text;
+  document.getElementById('quiz-role-bubble').textContent = q.hint;
+
+  // 换一个随机头像（避免连续重复）
+  let idx;
+  do { idx = Math.floor(Math.random() * roleKeys.length); } while (idx === lastQuizRoleIdx && roleKeys.length > 1);
+  lastQuizRoleIdx = idx;
+  document.getElementById('quiz-role-icon').innerHTML = pixelSVG(roleKeys[idx], 40);
+
+  const wrap = document.getElementById('options-wrap');
+  wrap.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="opt-key">${opt.key}</span><span>${opt.text}</span>`;
+    btn.onclick = () => selectOption(i, btn);
+    wrap.appendChild(btn);
+  });
+
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.classList.remove('enabled');
+  nextBtn.textContent = currentQ === questions.length - 1 ? '查看结果 →' : '继续 →';
+}
+
+function selectOption(i, btnEl) {
+  selectedOpt = i;
+  document.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+  btnEl.classList.add('selected');
+  document.getElementById('btn-next').classList.add('enabled');
+}
+
+function nextQuestion() {
+  if (selectedOpt === null) return;
+  answers.push(questions[currentQ].options[selectedOpt].dim);
+
+  if (currentQ < questions.length - 1) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function goBack() {
+  if (currentQ === 0) {
+    showPage('page-home');
+  } else {
+    currentQ--;
+    answers.pop();
+    renderQuestion();
+  }
+}
+
+// ──────────────────────────────────────────────
+// 结果计算（4 维度 → 16 种结果，沿用 DogTI 逻辑）
+// ──────────────────────────────────────────────
+function calcResult() {
+  const count = { E:0, I:0, S:0, N:0, T:0, F:0, J:0, P:0 };
+  answers.forEach(d => { if (count[d] !== undefined) count[d]++; });
+
+  const e = count.E >= count.I ? "E" : "I";
+  const s = count.S >= count.N ? "S" : "N";
+  const t = count.T >= count.F ? "T" : "F";
+  const j = count.J >= count.P ? "J" : "P";
+  const type = e + s + t + j;
+
+  const typeMap = {
+    "ENTJ": "在群里指点江山的群主",
+    "ENTP": "把所有话题都带偏的杠精",
+    "ENFJ": "比你还担心群氛围的和事佬",
+    "ENFP": "一分钟换一个话题的水群机器",
+    "ESTJ": "把群规背下来的管理员",
+    "ESTP": "气氛一冷立刻开麦的整活担当",
+    "ESFJ": "谁发朋友圈都会去点赞的暖心派",
+    "ESFP": "每句话都要配表情包的段子手",
+    "INTJ": "发言不多但一针见血的技术大佬",
+    "INTP": "发了长文之后就消失的学术派",
+    "INFJ": "凌晨两点发哲学长文的深夜玩家",
+    "INFP": "只发歌词和截图的文艺青年",
+    "ISTJ": "每天 8 点整打卡的自律标兵",
+    "ISTP": "默默看戏关键时刻出手的扫地僧",
+    "ISFJ": "记得每个人生日的细心派",
+    "ISFP": "只发表情包不打字的静默艺术家"
+  };
+  return typeMap[type] || "只发表情包不打字的静默艺术家";
+}
+
+// 结果名在手机上太长，按"XX 的 YY"的身份后缀断行
+function formatRoleName(name) {
+  const suffixes = [
+    "水群机器", "整活担当", "技术大佬", "深夜玩家", "文艺青年", "自律标兵",
+    "扫地僧", "细心派", "静默艺术家", "暖心派", "和事佬", "管理员",
+    "群主", "杠精", "段子手", "学术派"
+  ];
+  for (const suf of suffixes) {
+    if (name.endsWith(suf)) {
+      const prefix = name.slice(0, name.length - suf.length);
+      return prefix + '<br>' + suf;
+    }
+  }
+  return name;
+}
+
+function showResult() {
+  const typeName = calcResult();
+  const data = results[typeName];
+
+  document.getElementById('result-type').innerHTML = formatRoleName(typeName);
+  document.getElementById('result-subname').textContent = data.subname;
+  document.getElementById('result-quote-text').textContent = data.quote;
+  document.getElementById('result-desc').textContent = data.desc;
+
+  const now = new Date();
+  document.getElementById('result-date').textContent =
+    `${now.getMonth()+1}月${now.getDate()}日`;
+
+  const traitList = document.getElementById('trait-list');
+  traitList.innerHTML = '';
+  data.traits.forEach(t => {
+    const span = document.createElement('span');
+    span.className = 'trait';
+    span.textContent = t;
+    traitList.appendChild(span);
+  });
+
+  const frame = document.getElementById('result-role-frame');
+  frame.innerHTML = pixelSVG(data.role, 120);
+
+  showPage('page-result');
+}
+
+function shareResult() {
+  const type = document.getElementById('result-type').textContent.replace(/\s+/g, '');
+  const text = `我在 QunTI 测出来是「${type}」，你是哪种群友？`;
+  if (navigator.share) {
+    navigator.share({
+      title: 'QunTI 测试结果',
+      text: text,
+      url: window.location.href
+    }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(`${text} ${window.location.href}`).then(() => {
+      alert('结果文案已复制，贴到群里试试');
+    });
+  } else {
+    alert(text);
+  }
+}
+
+function retryQuiz() {
+  startQuiz();
+}
+
+// 首次加载渲染首页跑马灯
+renderHomeMarquee();
+</script>
+
+</body>
+</html>
