@@ -1,0 +1,8 @@
+name = "qunti"
+compatibility_date = "2026-04-22"
+
+# Serve the repo root as static assets. No Worker code needed — Cloudflare
+# serves index.html at the site root and any other files at their paths.
+# Requires Wrangler v3.78+ (static-assets support, GA since early 2025).
+[assets]
+directory = "./"
