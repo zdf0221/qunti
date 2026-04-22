@@ -721,12 +721,12 @@ const results = {
     desc: "你是群里永远在回应的人——谁发朋友圈你第一个赞，谁问题抛出来你第一个接，谁有难处你第一个伸手。你不是爱热闹，你是见不得人被忽视。你把别人的需求永远放在自己前面，说「好」总比说「不」容易，代价是有时候把自己说进去了。但你不后悔，因为看别人开心你是真的开心。",
     role: "reactor"
   },
-  "每句话都要配表情包的段子手": {
-    subname: "文字不够图来凑",
-    quote: "这个梗我必须发，不发手痒。",
-    traits: ["表情包收藏 2000+", "金句密度全群最高", "没人笑就发第二个", "群名片是梗图"],
-    desc: "你的聊天窗口是一个永不下档的脱口秀——每句话配一张图，每个梗接一个梗，群里哪里有笑声哪里就有你的 ID。你对「出场感」天生敏感，进群不是来聊事情的，是来表演的。大家偶尔嫌你闹，但只要你一天不发段子，群里就空得不像样。",
-    role: "memelord"
+  "每天搬一车地狱笑话的搬史专家": {
+    subname: "哥们，看这个",
+    quote: "别急着回，下一张更炸，后面还有三十张。",
+    traits: ["收藏夹 5000+ 张地狱图", "地狱等级能精确分档", "知道哪张发哪个群", "一条不发群里就空得发慌"],
+    desc: "你是群里的地狱信息差中转站——别人还没刷到的梗、还没听过的抽象故事，你已经整整齐齐备好一车送来。你不原创，但你比谁都懂互联网的气候：什么时候丢哪张会炸、哪几张只给哥们群、哪几张一旦出现在工作群就得删号跑路，你心里一本清账。你不是在娱乐自己，你是认真地在给大家投喂——每一声「笑死」都是你的勋章。别人以为你很闲，其实你刷得比上班还累。",
+    role: "banshi"
   },
   "发言不多但一针见血的技术大佬": {
     subname: "这个方案有问题，第 3 点",
@@ -923,24 +923,24 @@ const rolePixels = {
     "     ##      #  ",
     "     ##      #  "
   ],
-  // ESFP 段子手 - 哭笑脸框
-  memelord: [
+  // ESFP 搬史专家 - 装满素材的小推车
+  banshi: [
     "                ",
-    "   ##########   ",
+    "                ",
+    "                ",
+    "    ########    ",
+    "    # ## ## #   ",
+    "    #        #  ",
+    "    ########    ",
+    "  ############  ",
     "  #          #  ",
+    "  # ######## #  ",
     "  #          #  ",
-    "  #  ##  ##  #  ",
-    "  #  ##  ##  #  ",
-    "  #          #  ",
-    "  #          #  ",
-    "  #  ######  #  ",
-    "  #  #    #  #  ",
-    "  #  ######  #  ",
-    "  #          #  ",
-    "   ##########   ",
-    "     ##         ",
-    "    ##          ",
-    "                "
+    "  ############  ",
+    "    #      #    ",
+    "   ##      ##   ",
+    "  ####    ####  ",
+    "   ##      ##   "
   ],
   // INTJ 技术大佬 - 眼镜
   techguru: [
@@ -1118,9 +1118,9 @@ const roleKeys = Object.keys(rolePixels);
 // ──────────────────────────────────────────────
 function renderHomeMarquee() {
   const rows = [
-    ['groupowner','debater','peacemaker','topichopper','admin','entertainer','reactor','memelord'],
+    ['groupowner','debater','peacemaker','topichopper','admin','entertainer','reactor','banshi'],
     ['techguru','theorist','nightowl','poet','checkin','observer','caretaker','sticker'],
-    ['memelord','nightowl','groupowner','caretaker','reactor','theorist','sticker','entertainer']
+    ['banshi','nightowl','groupowner','caretaker','reactor','theorist','sticker','entertainer']
   ];
   ['home-row-1','home-row-2','home-row-3'].forEach((id, i) => {
     const row = rows[i];
@@ -1232,7 +1232,7 @@ function calcResult() {
     "ESTJ": "把群规背下来的管理员",
     "ESTP": "气氛一冷立刻开麦的整活担当",
     "ESFJ": "谁发朋友圈都会去点赞的暖心派",
-    "ESFP": "每句话都要配表情包的段子手",
+    "ESFP": "每天搬一车地狱笑话的搬史专家",
     "INTJ": "发言不多但一针见血的技术大佬",
     "INTP": "发了长文之后就消失的学术派",
     "INFJ": "凌晨两点发哲学长文的深夜玩家",
@@ -1250,7 +1250,7 @@ function formatRoleName(name) {
   const suffixes = [
     "水群机器", "整活担当", "技术大佬", "深夜玩家", "文艺青年", "自律标兵",
     "扫地僧", "细心派", "静默艺术家", "暖心派", "和事佬", "管理员",
-    "群主", "杠精", "段子手", "学术派"
+    "群主", "杠精", "搬史专家", "学术派"
   ];
   for (const suf of suffixes) {
     if (name.endsWith(suf)) {

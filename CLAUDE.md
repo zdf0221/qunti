@@ -70,7 +70,7 @@
 | ESTJ | 把群规背下来的管理员 | admin |
 | ESTP | 气氛一冷立刻开麦的整活担当 | entertainer |
 | ESFJ | 谁发朋友圈都会去点赞的暖心派 | reactor |
-| ESFP | 每句话都要配表情包的段子手 | memelord |
+| ESFP | 每天搬一车地狱笑话的搬史专家 | banshi |
 | INTJ | 发言不多但一针见血的技术大佬 | techguru |
 | INTP | 发了长文之后就消失的学术派 | theorist |
 | INFJ | 凌晨两点发哲学长文的深夜玩家 | nightowl |

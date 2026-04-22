@@ -59,7 +59,7 @@ type = e + s + t + j   // 例：INTJ
 | ESTJ | 把群规背下来的管理员 | 请阅读置顶第 3 条 | admin |
 | ESTP | 气氛一冷立刻开麦的整活担当 | 别慌，哥哥/姐姐下场了 | entertainer |
 | ESFJ | 谁发朋友圈都会去点赞的暖心派 | 看到了，马上处理 | reactor |
-| ESFP | 每句话都要配表情包的段子手 | 文字不够图来凑 | memelord |
+| ESFP | 每天搬一车地狱笑话的搬史专家 | 哥们，看这个 | banshi |
 | INTJ | 发言不多但一针见血的技术大佬 | 这个方案有问题，第 3 点 | techguru |
 | INTP | 发了长文之后就消失的学术派 | （点了一下上线 30 秒） | theorist |
 | INFJ | 凌晨两点发哲学长文的深夜玩家 | 你们醒着吗，我在想一件事 | nightowl |
