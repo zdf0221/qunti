@@ -7,7 +7,7 @@
 不需要构建，直接起静态服务：
 
 ```bash
-cd /home/zdf/qt/catbti
+cd /home/zdf/qt/qunti
 python3 -m http.server 8000
 # 打开 http://localhost:8000/
 ```

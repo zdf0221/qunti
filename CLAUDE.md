@@ -23,7 +23,7 @@
 ## 文件结构
 
 ```
-/home/zdf/qt/catbti/
+/home/zdf/qt/qunti/
 ├── index.html          ← 主文件，唯一生产文件（CSS/JS 全内联）
 ├── CLAUDE.md           ← 本文件
 ├── QUIZ-LOGIC.md       ← 题目与结果逻辑对照表
